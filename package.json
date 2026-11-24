@@ -1,0 +1,46 @@
+{
+  "name": "@imlunahey/oxlint-config",
+  "version": "0.1.0",
+  "description": "Luna's shared Oxlint rules and native component boundary",
+  "bin": {
+    "luna-lint-html": "./src/cli.js"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "type": "module",
+  "exports": {
+    "./config": {
+      "types": "./src/config.d.ts",
+      "import": "./src/config.js"
+    },
+    "./plugin": "./src/plugin.js",
+    "./boundary": "./src/boundary.js"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "lint": "oxlint -c oxlint.config.ts src",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
+    "check": "pnpm typecheck && pnpm lint && pnpm test",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "oxc-parser": "0.160.0",
+    "parse5": "8.1.1"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^3.0.3",
+    "oxfmt": "0.80.0",
+    "oxlint": "1.95.0",
+    "typescript": "^7.0.2"
+  },
+  "peerDependencies": {
+    "oxlint": ">=1.95.0"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "packageManager": "pnpm@12.18.0"
+}
