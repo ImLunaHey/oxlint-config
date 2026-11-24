@@ -2,6 +2,10 @@
   "name": "@imlunahey/oxlint-config",
   "version": "0.1.0",
   "description": "Luna's shared Oxlint rules and native component boundary",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ImLunaHey/oxlint-config.git"
+  },
   "bin": {
     "luna-lint-html": "./src/cli.js"
   },
@@ -17,6 +21,9 @@
     },
     "./plugin": "./src/plugin.js",
     "./boundary": "./src/boundary.js"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "scripts": {
     "test": "node --test tests/*.test.mjs",
