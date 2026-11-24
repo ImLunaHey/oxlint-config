@@ -3,12 +3,50 @@
 Importable Oxlint configuration and custom component-boundary rules. No ESLint
 runner or configuration is used. Oxfmt handles formatting.
 
-```sh
-pnpm add -D oxlint github:ImLunaHey/oxlint-config#luna/initial-project
+## Install from GitHub Packages
+
+The public release is `@imlunahey/oxlint-config@0.1.0` on GitHub Packages.
+Add this scope mapping to your project's `.npmrc`:
+
+```ini
+@imlunahey:registry=https://npm.pkg.github.com
 ```
 
-Use a commit SHA instead of the branch when pinning an application dependency.
-Private GitHub installs require the same repository access as cloning.
+GitHub's npm registry requires authentication even for public packages. You can
+reuse an existing GitHub CLI login without manually creating a PAT:
+
+```sh
+gh auth refresh --hostname github.com --scopes read:packages
+mkdir -p "$HOME/.local/bin"
+cat > "$HOME/.local/bin/luna-github-packages-token" <<'HELPER'
+#!/usr/bin/env sh
+exec gh auth token --hostname github.com
+HELPER
+chmod 700 "$HOME/.local/bin/luna-github-packages-token"
+```
+
+Add the following to your **user** `~/.npmrc`, replacing the helper path with
+your absolute path (pnpm only allows `tokenHelper` in user configuration):
+
+```ini
+//npm.pkg.github.com/:tokenHelper=/absolute/path/to/.local/bin/luna-github-packages-token
+```
+
+Then install with pnpm:
+
+```sh
+pnpm add -D oxlint @imlunahey/oxlint-config@0.1.0
+```
+
+For GitHub Actions use `permissions: { contents: read, packages: read }`,
+configure `actions/setup-node` with `registry-url: https://npm.pkg.github.com`
+and `scope: '@imlunahey'`, and set `NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}`
+on the pnpm install step. Do not commit credentials or vendor a package archive.
+
+Publish version tags through `.github/workflows/publish.yml`; it uses the
+workflow's `GITHUB_TOKEN` with `packages: write`. No shared PAT is required.
+
+## Use the configuration
 
 ```ts
 // oxlint.config.ts
@@ -48,7 +86,3 @@ not a security boundary against deliberately obfuscated code.
 
 Validation: `pnpm install --frozen-lockfile`, `pnpm check`, `pnpm format:check`.
 Tests run the real Oxlint CLI from an independent consumer directory.
-
-No registry release has been published. Git installs work without a build step,
-or use `pnpm pack` and install the resulting archive. Changesets describe future
-package releases; publishing requires an explicit release decision.

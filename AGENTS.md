@@ -32,3 +32,6 @@
 Run `pnpm format:check` and `pnpm check` before delivery. The latter includes
 TypeScript declaration checks, Oxlint, rule tests and a real Oxlint consumer test.
 Run `pnpm audit --prod` when changing dependencies. Report unrun checks honestly.
+
+Use Vitest for tests. React interaction tests use React Testing Library. Do not
+add a second node:test or Jest runner.

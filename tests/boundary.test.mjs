@@ -1,4 +1,4 @@
-import test from "node:test";
+import { test } from "vitest";
 import assert from "node:assert/strict";
 import { lintSource } from "../src/boundary.js";
 const bad = (code, file = "src/pages/example.html") =>
